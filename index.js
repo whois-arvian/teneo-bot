@@ -238,7 +238,7 @@ async function connectWebSocket(index) {
   };
 
   sockets[index].onerror = (error) => {
-    console.error(`WebSocket error for Account ${index + 1}:`, error);
+    console.error(`WebSocket error for Account ${index + 1}:`, "ERROR BOSSS 1");
   };
 }
 
@@ -292,7 +292,7 @@ async function reconnectWebSocket(index) {
   };
 
   sockets[index].onerror = (error) => {
-    console.error(`WebSocket error for Account ${index + 1}:`, "ERROR BOS");
+    console.error(`WebSocket error for Account ${index + 1}:`, "ERROR BOSSS 2");
   };
 }
 
