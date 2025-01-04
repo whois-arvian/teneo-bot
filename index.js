@@ -90,21 +90,37 @@ async function initialize() {
     process.exit(1);
   }
 
-  for (let i = 0; i < accounts.length; i++) {
-    potentialPoints[i] = 0;
-    countdowns[i] = "Calculating...";
-    pointsTotals[i] = 0;
-    pointsToday[i] = 0;
-    lastUpdateds[i] = null;
-    messages[i] = '';
-    userIds[i] = null;
-    browserIds[i] = null;
-    accessTokens[i] = null;
-    getUserId(i);
+  // Memproses akun dalam batch
+  const batchSize = 20;
+  for (let i = 0; i < accounts.length; i += batchSize) {
+    const batch = accounts.slice(i, i + batchSize);
+    await processBatch(batch, i);
   }
 
   displayAccountData(currentAccountIndex);
   handleUserInput();
+}
+
+async function processBatch(batch, startIndex) {
+  const promises = batch.map((account, index) => {
+    const accountIndex = startIndex + index;
+    potentialPoints[accountIndex] = 0;
+    countdowns[accountIndex] = "Calculating...";
+    pointsTotals[accountIndex] = 0;
+    pointsToday[accountIndex] = 0;
+    lastUpdateds[accountIndex] = null;
+    messages[accountIndex] = '';
+    userIds[accountIndex] = null;
+    browserIds[accountIndex] = null;
+    accessTokens[accountIndex] = null;
+    return getUserId(accountIndex);
+  });
+
+  // Tunggu semua promise selesai
+  await Promise.all(promises);
+
+  // Tunggu beberapa detik sebelum memproses batch berikutnya
+  await new Promise(resolve => setTimeout(resolve, 2000)); // 2 detik jeda
 }
 
 function generateBrowserId(index) {
