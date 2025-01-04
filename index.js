@@ -418,7 +418,8 @@ async function getUserId(index) {
       displayAccountData(index);
     }
 
-    console.log(`User Data for Account ${index + 1}:`, user);
+    // console.log(`User Data for Account ${index + 1}:`, user);
+    console.log(`User Data for Account ${index + 1}: `, messages[index]);
     startCountdownAndPoints(index);
     await connectWebSocket(index);
   } catch (error) {
