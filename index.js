@@ -92,9 +92,14 @@ async function initialize() {
 
   // Memproses akun dalam batch
   const batchSize = 20;
+  const totalBatches = Math.ceil(accounts.length / batchSize);
   for (let i = 0; i < accounts.length; i += batchSize) {
     const batch = accounts.slice(i, i + batchSize);
+    const currentBatchNumber = Math.floor(i / batchSize) + 1;
+    console.log(`Processing batch ${currentBatchNumber} of ${totalBatches}...`);
+
     await processBatch(batch, i);
+    await new Promise(resolve => setTimeout(resolve, 5000));
   }
 
   displayAccountData(currentAccountIndex);
@@ -116,11 +121,8 @@ async function processBatch(batch, startIndex) {
     return getUserId(accountIndex);
   });
 
-  // Tunggu semua promise selesai
   await Promise.all(promises);
-
-  // Tunggu beberapa detik sebelum memproses batch berikutnya
-  await new Promise(resolve => setTimeout(resolve, 2000)); // 2 detik jeda
+  await new Promise(resolve => setTimeout(resolve, 5000));
 }
 
 function generateBrowserId(index) {
